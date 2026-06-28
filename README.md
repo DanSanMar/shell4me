@@ -6,15 +6,15 @@
   <img src="https://img.shields.io/badge/Kali%20Linux-Compatible-8190ff?style=for-the-badge&logo=kali-linux&logoColor=white" alt="Kali Compatible">
 </p>
 
-**SHELL4ME** es un configurador y optimizador inteligente de terminales interactivo y multiplataforma. Detecta automáticamente si estás utilizando **Bash** o **Zsh** (como en las versiones modernas de Kali Linux) y despliega un menú ASCII interactivo para activar superpoderes de navegación, historial y autocompletado con un solo clic.
+**SHELL4ME** es un auto-configurador inteligente de terminales que detecta automáticamente si estás utilizando **Bash** o **Zsh** y despliega un menú ASCII interactivo para activar/desactivar opciones con un solo clic.
 
 ---
 
 ## 🚀 Características Principales
 
-* **Detección Automática de Shell:** Identifica de forma infalible si tu terminal corre sobre `zsh` o `bash` y adapta las opciones de forma dinámica.
-* **Menú Interactivo en Terminal:** Olvídate de editar archivos de configuración a mano. Muévete con las `Flechas`, selecciona con el `Espacio` y guarda con `Enter`.
-* **Idempotente y Seguro:** Si vuelves a ejecutar el script para cambiar tus opciones, este limpiará el bloque anterior y generará uno nuevo sin duplicar líneas ni romper tu configuración actual (`.bashrc` o `.zshrc`).
+* **Detección Automática de Shell:** Identifica si tu terminal corre sobre `zsh` o `bash` y adapta las opciones de forma dinámica.
+* **Menú Interactivo en Terminal:** Muévete con las `Flechas`, selecciona con el `Espacio` y guarda con `Enter`.
+* **Seguro:** Si vuelves a ejecutar el script para cambiar tus opciones, este limpiará el bloque anterior y generará uno nuevo sin duplicar líneas ni romper tu configuración actual (`.bashrc` o `.zshrc`).
 * **Protección Anti-Errores:** Todas las opciones inyectadas cuentan con salvaguardas (`2>/dev/null || true`) para asegurar compatibilidad total entre sistemas antiguos y modernos sin romper la carga de tu terminal.
 
 ---
