@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# DETECCIÓN INFALIBLE: Mira el nombre del proceso padre (PPID) que invocó el script
+# DETECCIÓN: Mira el nombre del proceso padre (PPID) que invocó el script
 DETECTED_SHELL=$(ps -p $PPID -o comm= 2>/dev/null | tr -d '-')
 
 # Sistema de respaldo secundario si ps falla
@@ -10,7 +10,7 @@ if [ -z "$DETECTED_SHELL" ] || [ "$DETECTED_SHELL" == "bash" ] || [ "$DETECTED_S
     fi
 fi
 
-# Configurar variables y opciones expandidas según la Shell real
+# Configurar variables y opciones expandidas según la Shell detectada
 if [[ "$DETECTED_SHELL" == *"zsh"* ]]; then
     TARGET_RC="$HOME/.zshrc"
     MARKER="# === BLOQUE SETOPT PERSONALIZADO (ZSH) ==="
@@ -44,7 +44,7 @@ else
     )
 fi
 
-# Paleta de colores ajustada
+
 CYAN="\e[36m"
 GREEN="\e[32m"
 MAGENTA="\e[35m"
@@ -58,7 +58,7 @@ cursor=0
 
 mostrar_logo_y_menu() {
     clear
-    # Tu logo personalizado modificado como "SHELL4ME"
+    
     echo -e "${CYAN}"
     echo "     ███████╗██╗  ██╗███████╗██╗     ██╗     ██╗  ██╗███╗   ███╗███████╗"
     echo "     ██╔════╝██║  ██║██╔════╝██║     ██║     ██║  ██║████╗ ████║██╔════╝"
