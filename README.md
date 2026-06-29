@@ -205,10 +205,14 @@ Plaintext
                ░▒▓ S H E L L   4   M E ▓▒░ --[ V 1.5.1 ]--
 --[ Optimizador y Configurador Inteligente de Shell Multientorno ]--
 --========================================================================
- Detectado: Zsh -> Configurando: /home/kali/.zshrc -> Para salir: Pulsa Ctrl+C
+ Detectado: Bash -> Configurando: /home/kali/.bashrc -> Para salir: Pulsa Ctrl+C
  Usa las flechas (↑ ↓) para moverte, [Espacio] para seleccionar y [Enter] para guardar.
 --========================================================================
-
- ➔ [X] autocd: Entra a directorios directamente escribiendo solo su nombre
-    [X] correct: Corrige automáticamente la ortografía de los comandos mal escritos
-    [ ] globdots: Incluye archivos ocultos (con punto) al usar el comodín *
+    [X] autocd: Entra a directorios directamente escribiendo solo su nombre
+ ➔ [X] cdspell: Corrige errores ortográficos leves en el comando 'cd''
+    [X] dirspell: Corrige errores ortográficos al usar el Autocompletar (Tab)
+    [X] direxpand: Expande las variables al autocompletar (ej: cd $VAR -> ruta)
+    [ ] dotglob: Incluye archivos ocultos (con punto) al usar el comodín *
+    [ ] extglob: Habilita el Globbing extendido (patrones de búsqueda avanzados)
+    [X] globstar: Permite usar ** para buscar recursivamente en subdirectorios
+    [X] checkwinsize: Actualiza el tamaño de la ventana en Bash tras cada comando
