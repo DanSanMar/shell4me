@@ -143,13 +143,13 @@ checkwinsize: Comprueba y actualiza las variables de tamaño de ventana tras cad
 
   
 
-# 📦 Instalación y Uso de un Solo Vistazo
+## 📦 Instalación y Uso de un Solo Vistazo
 
 Para probar este asistente en tu entorno local, puedes seguir los siguientes pasos en tu terminal:
 
   
 
-# 1. Clona el repositorio
+## 1. Clona el repositorio
 
 git clone [https://github.com/DanSanMar/shell4me.git](https://github.com/DanSanMar/shell4me.git)
 
@@ -157,19 +157,19 @@ cd shell4me
 
   
 
-# 2. Concede permisos de ejecución al script
+### 2. Concede permisos de ejecución al script
 
 chmod +x shell4me.sh
 
   
 
-# 3. Inicia el menú interactivo
+### 3. Inicia el menú interactivo
 
 ./shell4me.sh
 
   
 
-# 🎯 Aplicar los cambios de inmediato
+## 🎯 Aplicar los cambios de inmediato
 
 Al finalizar de forma exitosa, las líneas se habrán guardado de manera limpia al final del fichero correspondiente. Para cargarlas en la sesión de terminal que tienes abierta actualmente sin requerir un reinicio completo, utiliza el comando correspondiente:
 
