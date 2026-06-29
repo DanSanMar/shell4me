@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# DETECCIÓN: Mira el nombre del proceso padre (PPID) que invocó el script
+# DETECCIÓN: Mira el nombre del proceso padre (PPID) 
 DETECTED_SHELL=$(ps -p $PPID -o comm= 2>/dev/null | tr -d '-')
 # --- MARCADORES ---
 MARKER_START="# === INICIO BLOQUE PERSONALIZADO SHELL4ME ==="
@@ -62,7 +62,7 @@ cursor=0
 mostrar_logo_y_menu() {
     local menu=""
     
-    # Acumular todo el diseño en una única variable de texto
+    # Todo el diseño en una única variable de texto
     menu+="\e[H" # Mueve el cursor arriba sin borrar la pantalla
     menu+="${CYAN}\n"
     menu+="     ███████╗██╗  ██╗███████╗██╗     ██╗     ██╗  ██╗███╗   ███╗███████╗\n"
@@ -77,7 +77,7 @@ mostrar_logo_y_menu() {
     menu+="${WHITE}               ░▒▓ S H E L L   4   M E ▓▒░ --[ V 1.5.1 ]--\n"
     menu+="${BLUE}--[ Optimizador y Configurador Inteligente de Shell Multientorno ]--${RESET}\n"
     menu+="${WHITE}--========================================================================${RESET}\n"
-    menu+=" Detectado: ${GREEN}$SHELL_NAME${RESET} -> Configurando: ${YELLOW}$TARGET_RC${RESET} -> Para salir: Pulsa ${MAGENTA}Ctrl+C${RESET}\n"
+    menu+=" Detectado: ${GREEN}$SHELL_NAME${RESET} -> Configurando: ${YELLOW}$TARGET_RC${RESET} -> Para salir: Pulsa ${MAGENTA}[Ctrl+C] ó [Q]${RESET}\n"
     menu+=" Usa las ${YELLOW}flechas (↑ ↓)${RESET} para moverte, ${YELLOW}[Espacio]${RESET} para seleccionar y ${YELLOW}[Enter]${RESET} para guardar.\n"
     menu+="${WHITE}--========================================================================${RESET}\n\n"
 
@@ -100,11 +100,11 @@ mostrar_logo_y_menu() {
     menu+="\n${CYAN}------------------------------------------------------------------------${RESET}"
     menu+="\e[K" # Borra caracteres fantasmas sobrantes al final de la pantalla
 
-    # Renderizado instantáneo de un solo golpe (Atómico)
+    # Renderizado instantáneo
     printf "$menu"
 }
 
-# Limpieza inicial completa del lienzo y ocultar cursor
+# Limpieza inicial completa 
 echo -ne "\e[H\e[2J"
 echo -e "\e[?25l"
 
