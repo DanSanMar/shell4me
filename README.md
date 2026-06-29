@@ -99,7 +99,7 @@ Desactivación Explícita: Al desmarcar una casilla del menú, el script escribe
 
 # 🛠️ Opciones Disponibles (Según tu Entorno)
 
-##🔹 Para Zsh (Kali Linux, macOS...)
+## 🔹 Para Zsh (Kali Linux, macOS...)
 	
 autocd: Permite acceder a una ruta de directorio directamente escribiendo su nombre, sin necesidad del comando cd.
 
