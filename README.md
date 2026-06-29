@@ -193,7 +193,7 @@ source ~/.bashrc
 
 Menú Interactivo (Vista Previa)
 
-Plaintext
+```
 
      ███████╗██╗  ██╗███████╗██╗     ██╗     ██╗  ██╗███╗   ███╗███████╗
      ██╔════╝██║  ██║██╔════╝██║     ██║     ██║  ██║████╗ ████║██╔════╝
@@ -216,3 +216,4 @@ Plaintext
     [ ] extglob: Habilita el Globbing extendido (patrones de búsqueda avanzados)
     [X] globstar: Permite usar ** para buscar recursivamente en subdirectorios
     [X] checkwinsize: Actualiza el tamaño de la ventana en Bash tras cada comando
+    ```
