@@ -17,6 +17,26 @@
 * **Seguro:** Si vuelves a ejecutar el script para cambiar tus opciones, este limpiará el bloque anterior y generará uno nuevo sin duplicar líneas ni romper tu configuración actual (`.bashrc` o `.zshrc`).
 * **Protección Anti-Errores:** Todas las opciones inyectadas cuentan con salvaguardas (`2>/dev/null || true`) para asegurar compatibilidad total entre sistemas antiguos y modernos sin romper la carga de tu terminal.
 
+## 🚀 Novedades de la Versión 1.5
+
+Se introducen mejoras en la estabilidad de la interfaz de usuario (TUI) y un sistema transparente de gestión de copias de seguridad para garantizar que el entorno nunca corra peligro.
+
+### 🛠️ Mejoras Visuales y UX
+* **Cero Parpadeos y Efecto Fantasma:** Se ha optimizado el refresco de pantalla mediante secuencias de escape nativas (`\e[H\e[J`), eliminando los restos de texto colgado al redimensionar la terminal o navegar rápido por el menú.
+* **Cursor Oculto Dinámico:** El cursor parpadeante de la terminal se oculta automáticamente durante el uso del menú interactivo y se restaura al salir (`Q` o `Enter`).
+* **Control de Interrupciones Nv-Nativo:** Integración de un manejador de señales (`trap`) para `Ctrl+C` que limpia la pantalla y devuelve el cursor a su estado original sin romper la terminal del usuario.
+
+---
+
+### 🛡️ Sistema de Seguridad y Respaldos Transparente
+
+Para evitar la corrupción de tus archivos de configuración (`.bashrc` o `.zshrc`), la versión 1.5 procesa los cambios en tres fases totalmente visibles durante la ejecución:
+
+```text
+[1/3] Creando copia de seguridad en: ~/.zshrc.bak_shell4me...
+[2/3] Detectada configuración previa de SHELL4ME. Limpiando líneas antiguas...
+[3/3] Escribiendo nuevas directivas de optimización...
+
 ---
 
 ## 🛠️ Opciones Disponibles (Según tu Entorno)

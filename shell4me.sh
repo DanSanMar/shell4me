@@ -2,6 +2,12 @@
 
 # DETECCIÓN: Mira el nombre del proceso padre (PPID) que invocó el script
 DETECTED_SHELL=$(ps -p $PPID -o comm= 2>/dev/null | tr -d '-')
+# --- MARCADORES ---
+MARKER_START="# === INICIO BLOQUE PERSONALIZADO SHELL4ME ==="
+MARKER_END="# === FIN BLOQUE PERSONALIZADO SHELL4ME ==="
+
+# Restaurar cursor y limpiar si el usuario presiona Ctrl+C
+trap 'echo -e "\e[?25h"; echo -e "\n${YELLOW}Operación cancelada por el usuario.${RESET}"; exit 1' INT TERM
 
 # Sistema de respaldo secundario si ps falla
 if [ -z "$DETECTED_SHELL" ] || [ "$DETECTED_SHELL" == "bash" ] || [ "$DETECTED_SHELL" == "sh" ]; then
@@ -13,7 +19,6 @@ fi
 # Configurar variables y opciones expandidas según la Shell detectada
 if [[ "$DETECTED_SHELL" == *"zsh"* ]]; then
     TARGET_RC="$HOME/.zshrc"
-    MARKER="# === BLOQUE SETOPT PERSONALIZADO (ZSH) ==="
     SHELL_NAME="Zsh"
     OPCIONES=(
         "autocd"         "Entra a directorios directamente escribiendo solo su nombre" "on"
@@ -29,7 +34,6 @@ if [[ "$DETECTED_SHELL" == *"zsh"* ]]; then
     )
 else
     TARGET_RC="$HOME/.bashrc"
-    MARKER="# === BLOQUE SHOPT PERSONALIZADO (BASH) ==="
     SHELL_NAME="Bash"
     OPCIONES=(
         "autocd"       "Entra a directorios directamente escribiendo solo su nombre" "on"
@@ -44,7 +48,6 @@ else
     )
 fi
 
-
 CYAN="\e[36m"
 GREEN="\e[32m"
 MAGENTA="\e[35m"
@@ -57,24 +60,26 @@ num_opciones=$((${#OPCIONES[@]} / 3))
 cursor=0
 
 mostrar_logo_y_menu() {
-    clear
+    local menu=""
     
-    echo -e "${CYAN}"
-    echo "     ███████╗██╗  ██╗███████╗██╗     ██╗     ██╗  ██╗███╗   ███╗███████╗"
-    echo "     ██╔════╝██║  ██║██╔════╝██║     ██║     ██║  ██║████╗ ████║██╔════╝"
-    echo -e "${GREEN}"
-    echo "     ███████╗███████║█████╗  ██║     ██║     ███████║██╔████╔██║█████╗  "
-    echo "     ╚════██║██╔══██║██╔══╝  ██║     ██║     ╚════██║██║╚██╔╝██║██╔══╝  "
-    echo -e "${MAGENTA}"
-    echo "     ███████║██║  ██║███████╗███████╗███████╗     ██║██║ ╚═╝ ██║███████╗"
-    echo "     ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝     ╚═╝╚═╝     ╚═╝╚══════╝"
-    echo ""
-    echo -e "${WHITE}               ░▒▓ S H E L L   4   M E ▓▒░ --[ V 1.0 ]--"
-    echo -e "${BLUE}--[ Optimizador y Configurador Inteligente de Shell Multientorno ]--${RESET}"
-    echo -e "${WHITE}--========================================================================${RESET}"
-    echo -e " Detectado: ${GREEN}$SHELL_NAME${RESET} -> Configurando: ${YELLOW}$TARGET_RC${RESET}"
-    echo -e " Usa las ${YELLOW}flechas (↑ ↓)${RESET} para moverte, ${YELLOW}[Espacio]${RESET} para seleccionar y ${YELLOW}[Enter]${RESET} para guardar."
-    echo -e "${WHITE}--========================================================================${RESET}\n"
+    # Acumular todo el diseño en una única variable de texto
+    menu+="\e[H" # Mueve el cursor arriba sin borrar la pantalla
+    menu+="${CYAN}\n"
+    menu+="     ███████╗██╗  ██╗███████╗██╗     ██╗     ██╗  ██╗███╗   ███╗███████╗\n"
+    menu+="     ██╔════╝██║  ██║██╔════╝██║     ██║     ██║  ██║████╗ ████║██╔════╝\n"
+    menu+="${GREEN}"
+    menu+="     ███████╗███████║█████╗  ██║     ██║     ███████║██╔████╔██║█████╗  \n"
+    menu+="     ╚════██║██╔══██║██╔══╝  ██║     ██║     ╚════██║██║╚██╔╝██║██╔══╝  \n"
+    menu+="${MAGENTA}"
+    menu+="     ███████║██║  ██║███████╗███████╗███████╗     ██║██║ ╚═╝ ██║███████╗\n"
+    menu+="     ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝     ╚═╝╚═╝     ╚═╝╚══════╝\n"
+    menu+="\n"
+    menu+="${WHITE}               ░▒▓ S H E L L   4   M E ▓▒░ --[ V 1.5.1 ]--\n"
+    menu+="${BLUE}--[ Optimizador y Configurador Inteligente de Shell Multientorno ]--${RESET}\n"
+    menu+="${WHITE}--========================================================================${RESET}\n"
+    menu+=" Detectado: ${GREEN}$SHELL_NAME${RESET} -> Configurando: ${YELLOW}$TARGET_RC${RESET} -> Para salir: Pulsa ${MAGENTA}Ctrl+C${RESET}\n"
+    menu+=" Usa las ${YELLOW}flechas (↑ ↓)${RESET} para moverte, ${YELLOW}[Espacio]${RESET} para seleccionar y ${YELLOW}[Enter]${RESET} para guardar.\n"
+    menu+="${WHITE}--========================================================================${RESET}\n\n"
 
     local idx=0
     for ((i=0; i<${#OPCIONES[@]}; i+=3)); do
@@ -86,16 +91,24 @@ mostrar_logo_y_menu() {
         if [ "$state" == "on" ]; then check="[X]"; fi
 
         if [ $idx -eq $cursor ]; then
-            echo -e " ${GREEN}➔ $check $opt:${RESET} $desc"
+            menu+=" ${GREEN}➔ $check $opt:${RESET} $desc\n"
         else
-            echo -e "    $check $opt: $desc"
+            menu+="    $check $opt: $desc\n"
         fi
         ((idx++))
     done
-    echo -e "\n${CYAN}------------------------------------------------------------------------${RESET}"
+    menu+="\n${CYAN}------------------------------------------------------------------------${RESET}"
+    menu+="\e[K" # Borra caracteres fantasmas sobrantes al final de la pantalla
+
+    # Renderizado instantáneo de un solo golpe (Atómico)
+    printf "$menu"
 }
 
-# Bucle principal de captura de teclado
+# Limpieza inicial completa del lienzo y ocultar cursor
+echo -ne "\e[H\e[2J"
+echo -e "\e[?25l"
+
+# --- Bucle principal ---
 while true; do
     mostrar_logo_y_menu
     IFS= read -rsn1 key
@@ -120,23 +133,34 @@ while true; do
         else
             OPCIONES[elemento_idx]="on"
         fi
+    elif [[ $key == "q" || $key == "Q" ]]; then
+        echo -ne "\e[H\e[2J"
+        echo -e "\e[?25h" # Restaurar cursor al salir con Q
+        echo -e "${YELLOW}Operación cancelada. No se han hecho cambios.${RESET}"
+        exit 0
     fi
 done
 
 # --- PROCESAMIENTO Y GUARDADO ---
-if [ -f "$TARGET_RC" ] && grep -q "$MARKER" "$TARGET_RC"; then
-    echo "Actualizando configuración existente..."
-    sed -i "/$MARKER/,\$d" "$TARGET_RC"
+touch "$TARGET_RC"
+
+BACKUP_FILE="${TARGET_RC}.bak_shell4me"
+echo -e "\n${BLUE}[1/3]${RESET} Creando copia de seguridad en: ${YELLOW}$BACKUP_FILE${RESET}..."
+cp "$TARGET_RC" "$BACKUP_FILE"
+
+if grep -q "$MARKER_START" "$TARGET_RC"; then
+    echo -e "${BLUE}[2/3]${RESET} Detectada configuración previa de SHELL4ME. Limpiando líneas antiguas..."
+    awk "/$MARKER_START/{p=1;next} /$MARKER_END/{p=0;next} !p" "$TARGET_RC" > "${TARGET_RC}.tmp"
+    mv "${TARGET_RC}.tmp" "$TARGET_RC"
+else
+    echo -e "${BLUE}[2/3]${RESET} No se detectaron bloques previos. Procediendo a la inserción limpia..."
 fi
 
-touch "$TARGET_RC"
-echo -e "\nGuardando configuración..."
+echo -e "${BLUE}[3/3]${RESET} Escribiendo nuevas directivas de optimización..."
 
 {
-echo "$MARKER"
-echo "# ---------------- ---------------------------------------------------"
-echo "# Configuración personalizada de $SHELL_NAME - Generado por SHELL4ME"
-echo "# -------------------------------------------------------------------"
+echo "$MARKER_START"
+echo "# Configuración de $SHELL_NAME - Generado por SHELL4ME"
 
 for ((i=0; i<${#OPCIONES[@]}; i+=3)); do
     opt="${OPCIONES[i]}"
@@ -144,18 +168,32 @@ for ((i=0; i<${#OPCIONES[@]}; i+=3)); do
     state="${OPCIONES[i+2]}"
     
     if [ "$state" == "on" ]; then
-        echo -e "\n# $desc"
+        echo -e "\n# [ACTIVO] $desc"
         if [ "$SHELL_NAME" == "Zsh" ]; then
             echo "setopt $opt 2>/dev/null || true"
         else
             echo "shopt -s $opt 2>/dev/null || true"
         fi
+    else
+        echo -e "\n# [INACTIVO] $desc"
+        if [ "$SHELL_NAME" == "Zsh" ]; then
+            echo "unsetopt $opt 2>/dev/null || true"
+        else
+            echo "shopt -u $opt 2>/dev/null || true"
+        fi
     fi
 done
 
-echo -e "\n# Fin del bloque personalizado"
-echo "# ==================================="
+echo -e "\n$MARKER_END"
 } >> "$TARGET_RC"
 
-echo -e "\n${GREEN}¡Éxito! Modificaciones guardadas en $TARGET_RC.${RESET}"
-echo -e "Para aplicar los cambios ahora mismo, ejecuta: ${YELLOW}source $TARGET_RC${RESET}"
+echo -e "\n${GREEN}███████╗██╗  ██╗██╗████████╗██████╗ ░▒▓ S H E L L   4   M E ▓▒░${RESET}"
+echo -e "${GREEN}██╔════╝╚██╗██╔╝██║╚══██╔══╝██╔══██╗ ¡Modificaciones guardadas con éxito!${RESET}"
+echo -e "${GREEN}█████╗   ╚███╔╝ ██║   ██║   ██║  ██║ Archivo modificado: ${YELLOW}$TARGET_RC${RESET}"
+echo -e "${GREEN}██╔══╝   ██╔██╗ ██║   ██║   ██║  ██║ Respaldo intacto en: ${YELLOW}$BACKUP_FILE${RESET}"
+echo -e "${GREEN}███████╗██╔╝ ██╗██║   ██║   ██████╔╝${RESET}"
+echo -e "${GREEN}╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝   ╚═════╝ ${RESET}"
+echo -e "\nPara aplicar los cambios ahora mismo sin reiniciar la terminal, ejecuta:"
+echo -e "➔ ${CYAN}source $TARGET_RC${RESET}\n"
+
+echo -e "\e[?25h" # Restaurar cursor al finalizar con éxito
